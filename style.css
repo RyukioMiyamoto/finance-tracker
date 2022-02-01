@@ -1,0 +1,187 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #d7fbd4;
+  --app-background: #d7fbd4;
+  --income: #afd91a;
+  --expense: #ff535f;
+  --text: #323232;
+  --placeholder: #9c9c9c;
+  --background: #fcfcfc;
+}
+
+body {
+  font-family: "Overpass", sans-serif;
+  background-color: var(--app-background);
+}
+
+#app-container {
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
+#app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 90px;
+}
+
+#app-header h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--income);
+  position: relative;
+}
+
+#app-header h1::before {
+  display: block;
+  content: "";
+  width: 60px;
+  height: 60px;
+  background: url("./wallet-solid.svg");
+
+  position: absolute;
+  left: -75px;
+}
+
+#app-header h2,
+#app-header span {
+  font-size: 2.25rem;
+  font-weight: 600;
+}
+
+.balance-positive {
+  color: var(--income);
+}
+
+.balance-negative {
+  color: var(--expense);
+}
+
+#entries-form,
+#entries-container {
+  display: flex;
+  width: 1100px;
+  justify-content: center;
+  gap: 30px;
+  margin: 0 auto;
+}
+
+#entries-form input::placeholder {
+  font-size: 2.25rem;
+  color: var(--placeholder);
+}
+
+#entries-form input,
+#entries-form select,
+#entries-form button {
+  display: flex;
+  max-width: 100%;
+  place-content: center;
+  padding: 30px;
+
+  font-size: 2rem;
+  border: none;
+  border-radius: 15px;
+}
+
+#entries-form input:focus,
+#entries-form select:focus {
+  outline: none;
+}
+
+input#form-description {
+  width: 750px;
+}
+
+input#form-value {
+  width: 150px;
+}
+
+select#form-type {
+  width: 120px;
+}
+
+button#submit {
+  background: inherit;
+  width: 100px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+#entries-container {
+  display: flex;
+  flex-direction: column;
+  width: 1100px;
+
+  margin-top: 50px;
+}
+
+#message {
+  color: var(--expense);
+  font-size: 1.75rem;
+  text-align: center;
+  display: none;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 5fr 2fr 0.5fr;
+  place-items: center;
+  padding: 20px;
+
+  height: 120px;
+  background: var(--background);
+  border-radius: 15px;
+
+  animation: show 0.25s forwards ease-in-out;
+}
+
+@keyframes show {
+  from {
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.entry h3 {
+  font-size: 2.25rem;
+  justify-self: start;
+}
+
+.entry small {
+  font-size: 1.15rem;
+  grid-row: 2;
+  justify-self: start;
+  align-self: flex-start;
+}
+
+.value,
+.delete-entry {
+  font-size: 2.25rem;
+  grid-row: span 2;
+}
+
+.expense-value {
+  color: var(--expense);
+}
+
+.income-value {
+  color: var(--income);
+}
+
+.delete-entry {
+  background: inherit;
+  color: var(--expense);
+  border: none;
+
+  cursor: pointer;
+}
