@@ -3,6 +3,9 @@ const btn = document.getElementById("submit");
 const message = document.getElementById("message");
 const entriesContainer = document.getElementById("entries-container");
 const allEntries = document.querySelectorAll(".entry");
+const reducedMotion =
+  window.matchMedia("(prefers-reduced-motion)").matches ||
+  window.matchMedia("(prefers-reduced-motion: reduced)").matches;
 
 function getCurTime() {
   const prefLanguage = window.navigator.language;
@@ -55,6 +58,7 @@ entriesForm.addEventListener("submit", (e) => {
     value <= 0
   ) {
     blockButton();
+    return;
   } else {
     const markup = generateMarkup(description, value, type, time);
     entriesContainer.insertAdjacentHTML("afterbegin", markup);
@@ -69,4 +73,4 @@ function delayAnimation() {
   });
 }
 
-delayAnimation();
+!reducedMotion && delayAnimation();

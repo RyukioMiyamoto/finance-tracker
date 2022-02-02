@@ -144,7 +144,7 @@ button#submit {
   place-items: center;
   padding: 20px;
 
-  height: 120px;
+  height: fit-content;
   background: var(--background);
   border-radius: 15px;
   opacity: 0;
@@ -154,6 +154,8 @@ button#submit {
 .entry h3 {
   font-size: 2.25rem;
   justify-self: start;
+  max-width: 30ch;
+  word-break: break-all;
 }
 
 .entry small {
@@ -161,6 +163,11 @@ button#submit {
   grid-row: 2;
   justify-self: start;
   align-self: flex-start;
+}
+
+.value {
+  max-width: 6ch;
+  word-break: break-all;
 }
 
 .value,
@@ -284,5 +291,15 @@ button#submit {
 @keyframes show {
   to {
     opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  #app-header,
+  #entries-form,
+  #entries-container,
+  .entry {
+    opacity: 1;
+    animation: none;
   }
 }
