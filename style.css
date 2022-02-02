@@ -9,8 +9,9 @@
   --app-background: #d7fbd4;
   --income: #afd91a;
   --expense: #ff535f;
-  --text: #323232;
-  --placeholder: #9c9c9c;
+  --text: #5a5a5a;
+  --text-secondary: #a9a9a9;
+  --placeholder: #dddcdc;
   --background: #fcfcfc;
 }
 
@@ -116,6 +117,14 @@ select#form-type {
   width: 120px;
 }
 
+button {
+  transition: transform 0.275s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.35);
+}
+
 button#submit {
   background: inherit;
   width: 100px;
@@ -135,7 +144,7 @@ button#submit {
   text-align: center;
   opacity: 0;
   margin: 30px auto;
-  transition: 0.15s ease-in;
+  transition: opacity 0.15s ease-in;
 }
 
 .entry {
@@ -143,15 +152,15 @@ button#submit {
   grid-template-columns: 5fr 2fr 0.5fr;
   place-items: center;
   padding: 20px;
-
   height: fit-content;
   background: var(--background);
   border-radius: 15px;
   opacity: 0;
-  animation: showLeft 0.75s forwards;
+  animation: showLeft 1s forwards;
 }
 
 .entry h3 {
+  color: var(--text);
   font-size: 2.25rem;
   justify-self: start;
   max-width: 30ch;
@@ -159,6 +168,7 @@ button#submit {
 }
 
 .entry small {
+  color: var(--text-secondary);
   font-size: 1.15rem;
   grid-row: 2;
   justify-self: start;
@@ -280,6 +290,7 @@ button#submit {
 @keyframes showLeft {
   from {
     transform: translateX(-25px);
+    filter: brightness(0.75);
     opacity: 0;
   }
   to {
@@ -289,7 +300,11 @@ button#submit {
 }
 
 @keyframes show {
+  from {
+    transform: scale(2.5);
+  }
   to {
+    transform: scale(1);
     opacity: 1;
   }
 }

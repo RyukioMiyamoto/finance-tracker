@@ -18,6 +18,21 @@ function getCurTime() {
   });
 }
 
+function blockButton() {
+  setMessage(1, "red", "Please enter valid values");
+  btn.disabled = true;
+  setTimeout(() => {
+    setMessage(0, "none", "");
+    btn.disabled = false;
+  }, 1500);
+}
+
+function setMessage(opacity, color, text) {
+  message.style.color = color;
+  message.style.opacity = opacity;
+  message.innerText = text;
+}
+
 function clearForm() {
   document.getElementById("form-description").value = "";
   document.getElementById("form-value").value = "";
@@ -35,13 +50,10 @@ function generateMarkup(desc, value, type, time) {
   </div>`;
 }
 
-function blockButton() {
-  message.style.opacity = 1;
-  btn.disabled = true;
-  setTimeout(() => {
-    message.style.opacity = 0;
-    btn.disabled = false;
-  }, 1500);
+function delayAnimation() {
+  allEntries.forEach((entry, i, array) => {
+    entry.style.animationDelay = `${i * 250}ms`;
+  });
 }
 
 entriesForm.addEventListener("submit", (e) => {
@@ -67,10 +79,5 @@ entriesForm.addEventListener("submit", (e) => {
   }
 });
 
-function delayAnimation() {
-  allEntries.forEach((entry, i, array) => {
-    entry.style.animationDelay = `${i * 250}ms`;
-  });
-}
-
 !reducedMotion && delayAnimation();
+document.getElementById("form-description").focus();
