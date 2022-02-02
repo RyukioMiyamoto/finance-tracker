@@ -20,15 +20,19 @@ body {
 }
 
 #app-container {
-  margin: 0 auto;
   max-width: 1440px;
+  margin: 0 auto;
 }
 
 #app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  max-width: 100%;
   padding: 60px 90px;
+  opacity: 0;
+  animation: show 1s forwards;
 }
 
 #app-header h1 {
@@ -46,7 +50,7 @@ body {
   background: url("./wallet-solid.svg");
 
   position: absolute;
-  left: -75px;
+  left: -60px;
 }
 
 #app-header h2,
@@ -63,12 +67,17 @@ body {
   color: var(--expense);
 }
 
+#entries-form {
+  opacity: 0;
+  animation: showLeft 0.75s forwards;
+}
+
 #entries-form,
 #entries-container {
   display: flex;
-  width: 1100px;
   justify-content: center;
   gap: 30px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -83,7 +92,7 @@ body {
   display: flex;
   max-width: 100%;
   place-content: center;
-  padding: 30px;
+  padding: 20px 30px;
 
   font-size: 2rem;
   border: none;
@@ -118,15 +127,15 @@ button#submit {
   display: flex;
   flex-direction: column;
   width: 1100px;
-
-  margin-top: 50px;
 }
 
 #message {
   color: var(--expense);
   font-size: 1.75rem;
   text-align: center;
-  display: none;
+  opacity: 0;
+  margin: 30px auto;
+  transition: 0.15s ease-in;
 }
 
 .entry {
@@ -138,18 +147,8 @@ button#submit {
   height: 120px;
   background: var(--background);
   border-radius: 15px;
-
-  animation: show 0.25s forwards ease-in-out;
-}
-
-@keyframes show {
-  from {
-    transform: translateY(-25px);
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  opacity: 0;
+  animation: showLeft 0.75s forwards;
 }
 
 .entry h3 {
@@ -184,4 +183,106 @@ button#submit {
   border: none;
 
   cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+  #app-container {
+    max-width: 1000px;
+  }
+
+  #app-header {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 1000px) {
+  #app-container {
+    max-width: 800px;
+  }
+
+  #app-header {
+    display: grid;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 800px) {
+  #app-container {
+    max-width: 75vw;
+  }
+
+  #app-header {
+    display: grid;
+    padding: 20px;
+  }
+
+  #app-header h1 {
+    font-size: 2rem;
+  }
+
+  #app-header h1::before {
+    width: 30px;
+    height: 30px;
+    left: -40px;
+  }
+
+  #app-header h2,
+  #app-header span {
+    font-size: 1.5rem;
+  }
+
+  #entries-form {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 30px;
+    position: relative;
+  }
+
+  #entries-form input,
+  #entries-form select {
+    padding: 10px;
+    height: 50px;
+    width: 100%;
+  }
+
+  #entries-form input::placeholder {
+    font-size: 1.25rem;
+    color: var(--placeholder);
+  }
+
+  input#form-description {
+    grid-column: 1;
+  }
+
+  input#form-value {
+    grid-column: 2;
+  }
+
+  select#form-type {
+    grid-column: 3;
+    font-size: 1.5rem;
+  }
+
+  button#submit {
+    position: absolute;
+    padding: 0;
+    right: -100px;
+  }
+}
+
+@keyframes showLeft {
+  from {
+    transform: translateX(-25px);
+    opacity: 0;
+  }
+  to {
+    transform: initial;
+    opacity: 1;
+  }
+}
+
+@keyframes show {
+  to {
+    opacity: 1;
+  }
 }

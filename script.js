@@ -1,7 +1,8 @@
-const activitiesForm = document.getElementById("entries-form");
-const activitiesContainer = document.getElementById("entries-container");
-const allEntries = document.querySelectorAll(".entry");
+const entriesForm = document.getElementById("entries-form");
+const btn = document.getElementById("submit");
 const message = document.getElementById("message");
+const entriesContainer = document.getElementById("entries-container");
+const allEntries = document.querySelectorAll(".entry");
 
 function getCurTime() {
   const prefLanguage = window.navigator.language;
@@ -20,32 +21,52 @@ function clearForm() {
   document.getElementById("form-type").value = "+";
 }
 
-activitiesForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const description = document.getElementById("form-description").value;
-  const value = document.getElementById("form-value").value;
-  const type = document.getElementById("form-type").value;
-  const time = getCurTime();
-
-  if (description.trim() === "" || value.trim() === "" || isNaN(value)) {
-    message.style.display = "block";
-    setTimeout(() => {
-      message.style.display = "none";
-    }, 2500);
-    return;
-  }
-
-  const markup = `
-  <div class="entry">
-    <h3>${description}</h3>
+function generateMarkup(desc, value, type, time) {
+  return `<div class="entry">
+    <h3>${desc}</h3>
     <small>${time}</small>
     <span class="value ${
       type === "+" ? "income" : "expense"
     }-value">$${value}</span>
     <button class="delete-entry">X</button>
   </div>`;
+}
 
-  activitiesContainer.insertAdjacentHTML("afterbegin", markup);
-  clearForm();
-  document.getElementById("form-description").focus();
+function blockButton() {
+  message.style.opacity = 1;
+  btn.disabled = true;
+  setTimeout(() => {
+    message.style.opacity = 0;
+    btn.disabled = false;
+  }, 1500);
+}
+
+entriesForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const description = document.getElementById("form-description").value;
+  const value = document.getElementById("form-value").value;
+  const type = document.getElementById("form-type").value;
+  const time = getCurTime();
+
+  if (
+    description.trim() === "" ||
+    value.trim() === "" ||
+    isNaN(value) ||
+    value <= 0
+  ) {
+    blockButton();
+  } else {
+    const markup = generateMarkup(description, value, type, time);
+    entriesContainer.insertAdjacentHTML("afterbegin", markup);
+    clearForm();
+    document.getElementById("form-description").focus();
+  }
 });
+
+function delayAnimation() {
+  allEntries.forEach((entry, i, array) => {
+    entry.style.animationDelay = `${i * 250}ms`;
+  });
+}
+
+delayAnimation();
