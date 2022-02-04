@@ -6,9 +6,9 @@
 
 :root {
   --background: #d7fbd4;
-  --app-background: #d7fbd4;
+  --app-background: #c4f2bf;
   --income: #afd91a;
-  --expense: #ff535f;
+  --expense: #e93f4a;
   --text: #5a5a5a;
   --text-secondary: #a9a9a9;
   --placeholder: #dddcdc;
@@ -33,7 +33,7 @@ body {
   max-width: 100%;
   padding: 60px 90px;
   opacity: 0;
-  animation: show 1s forwards;
+  animation: show 1.25s forwards;
 }
 
 #app-header h1 {
@@ -67,12 +67,6 @@ body {
 .balance-negative {
   color: var(--expense);
 }
-
-#entries-form {
-  opacity: 0;
-  animation: showLeft 0.75s forwards;
-}
-
 #entries-form,
 #entries-container {
   display: flex;
@@ -98,6 +92,7 @@ body {
   font-size: 2rem;
   border: none;
   border-radius: 15px;
+  opacity: 0;
 }
 
 #entries-form input:focus,
@@ -107,6 +102,7 @@ body {
 
 input#form-description {
   width: 750px;
+  animation: flipY 1.25s forwards;
 }
 
 input:-webkit-autofill {
@@ -115,26 +111,25 @@ input:-webkit-autofill {
 
 input#form-value {
   width: 150px;
+  animation: flipY 1.5s forwards;
 }
 
 select#form-type {
   width: 120px;
   padding: 5px 10px;
+  animation: flipY 1.6s forwards;
 }
 
 button {
-  transition: transform 0.275s ease-in-out;
-}
-
-button:hover {
-  transform: scale(1.35);
+  transition: transform 0.175s ease-in-out;
 }
 
 button#submit {
   background: inherit;
-  width: 100px;
   color: var(--text);
   cursor: pointer;
+  opacity: 0;
+  animation: flipY 1.7s forwards;
 }
 
 #entries-container {
@@ -168,7 +163,7 @@ button#submit {
   background: var(--background);
   border-radius: 15px;
   opacity: 0;
-  animation: showLeft 0.75s forwards;
+  animation: flipX 0.75s forwards;
 }
 
 .entry h3 {
@@ -232,6 +227,21 @@ button#submit {
   #app-header {
     display: grid;
     padding: 20px;
+  }
+
+  #app-header,
+  input#form-description,
+  input#form-value,
+  select#form-type,
+  button#submit,
+  #entries-container,
+  .entry {
+    opacity: 1;
+    animation: none;
+  }
+
+  button:hover {
+    transform: none;
   }
 }
 
@@ -299,34 +309,51 @@ button#submit {
   }
 }
 
-@keyframes showLeft {
-  from {
-    transform: translateX(-25px);
-    filter: brightness(0.75);
-    opacity: 0;
+@keyframes flipY {
+  0% {
+    transform: rotateY(0deg);
   }
-  to {
-    transform: initial;
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes flipX {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
     opacity: 1;
   }
 }
 
 @keyframes show {
-  from {
-    transform: scale(2.5);
-  }
   to {
-    transform: scale(1);
     opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion) {
   #app-header,
-  #entries-form,
+  input#form-description,
+  input#form-value,
+  select#form-type,
+  button#submit,
   #entries-container,
   .entry {
     opacity: 1;
     animation: none;
+  }
+
+  button:hover {
+    transform: none;
   }
 }

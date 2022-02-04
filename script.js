@@ -2,13 +2,19 @@ const entriesForm = document.getElementById("entries-form");
 const btn = document.getElementById("submit");
 const message = document.getElementById("message");
 const entriesContainer = document.getElementById("entries-container");
-const allEntries = document.querySelectorAll(".entry");
 const reducedMotion =
   window.matchMedia("(prefers-reduced-motion)").matches ||
   window.matchMedia("(prefers-reduced-motion: reduced)").matches;
+const prefLanguage = window.navigator.language;
+let items;
+
+function delayAnimation() {
+  allEntries.forEach((entry, i) => {
+    entry.style.animationDelay = `${i * 250}ms`;
+  });
+}
 
 function getCurTime() {
-  const prefLanguage = window.navigator.language;
   return new Date().toLocaleDateString(prefLanguage, {
     month: "long",
     day: "numeric",
@@ -39,6 +45,7 @@ function clearForm() {
   document.getElementById("form-description").value = "";
   document.getElementById("form-value").value = "";
   document.getElementById("form-type").value = "+";
+  document.getElementById("form-description").focus();
 }
 
 function generateMarkup(desc, value, type, time) {
@@ -52,36 +59,61 @@ function generateMarkup(desc, value, type, time) {
   </div>`;
 }
 
-function delayAnimation() {
-  allEntries.forEach((entry, i, array) => {
-    entry.style.animationDelay = `${i * 250}ms`;
-  });
+function getEntriesFromLS() {
+  items = localStorage.getItem("items");
+  if (items) {
+    items = JSON.parse(items);
+  } else {
+    items = [];
+  }
+
+  return items;
 }
 
-entriesForm.addEventListener("submit", (e) => {
+function addEntryToLS(desc, value, type, time) {
+  items = getEntriesFromLS();
+
+  items = [{ desc, value, type, time }, ...items];
+  localStorage.setItem("items", JSON.stringify(items));
+}
+
+function renderEntry(desc, value, type, time) {
+  const markup = generateMarkup(desc, value, type, time);
+  entriesContainer.insertAdjacentHTML("afterbegin", markup);
+}
+
+function renderEntriesFromLS() {
+  items = getEntriesFromLS();
+  items.forEach(({ desc, value, type, time }) =>
+    renderEntry(desc, value, type, time)
+  );
+}
+
+function handleSubmit(e) {
   e.preventDefault();
-  const description = document.getElementById("form-description").value;
+  const desc = document.getElementById("form-description").value;
   const value = document.getElementById("form-value").value;
   const type = document.getElementById("form-type").value;
   const time = getCurTime();
 
-  if (
-    description.trim() === "" ||
-    value.trim() === "" ||
-    isNaN(value) ||
-    value <= 0
-  ) {
+  if (desc.trim() === "" || value.trim() === "" || isNaN(value) || value <= 0) {
     setMessage(1, "Please enter valid values");
     blockButton();
+    clearForm();
 
     return;
   } else {
-    const markup = generateMarkup(description, value, type, time);
-    entriesContainer.insertAdjacentHTML("afterbegin", markup);
+    renderEntry(desc, value, type, time);
+    addEntryToLS(desc, value, type, time);
     clearForm();
-    document.getElementById("form-description").focus();
   }
-});
+}
+
+renderEntriesFromLS();
+const allEntries = document.querySelectorAll(".entry");
+const deleteBtn = document.querySelectorAll(".delete-entry");
 
 !reducedMotion && delayAnimation();
 document.getElementById("form-description").focus();
+
+entriesForm.addEventListener("submit", handleSubmit);
