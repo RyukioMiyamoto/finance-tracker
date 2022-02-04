@@ -19,18 +19,20 @@ function getCurTime() {
 }
 
 function blockButton() {
-  setMessage(1, "red", "Please enter valid values");
   btn.disabled = true;
   setTimeout(() => {
-    setMessage(0, "none", "");
-    btn.disabled = false;
+    setMessage(0, "");
+    setTimeout(() => {
+      btn.disabled = false;
+    }, 250);
   }, 1500);
 }
 
-function setMessage(opacity, color, text) {
-  message.style.color = color;
+function setMessage(opacity, text) {
   message.style.opacity = opacity;
-  message.innerText = text;
+  setTimeout(() => {
+    message.innerText = text;
+  }, `${opacity === 0 ? 250 : 0}`);
 }
 
 function clearForm() {
@@ -69,7 +71,9 @@ entriesForm.addEventListener("submit", (e) => {
     isNaN(value) ||
     value <= 0
   ) {
+    setMessage(1, "Please enter valid values");
     blockButton();
+
     return;
   } else {
     const markup = generateMarkup(description, value, type, time);

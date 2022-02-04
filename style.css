@@ -109,12 +109,17 @@ input#form-description {
   width: 750px;
 }
 
+input:-webkit-autofill {
+  box-shadow: 0 0 0 100px var(--background) inset;
+}
+
 input#form-value {
   width: 150px;
 }
 
 select#form-type {
   width: 120px;
+  padding: 5px 10px;
 }
 
 button {
@@ -139,12 +144,19 @@ button#submit {
 }
 
 #message {
-  color: var(--expense);
-  font-size: 1.75rem;
+  width: fit-content;
+
+  font-size: 2.175rem;
+  font-weight: 600;
   text-align: center;
-  opacity: 0;
+  color: #fff;
+
+  background-color: var(--expense);
+  padding: 10px 30px;
+  border-radius: 15px;
   margin: 30px auto;
-  transition: opacity 0.15s ease-in;
+  opacity: 0;
+  transition: opacity 0.175s ease-in;
 }
 
 .entry {
@@ -156,7 +168,7 @@ button#submit {
   background: var(--background);
   border-radius: 15px;
   opacity: 0;
-  animation: showLeft 1s forwards;
+  animation: showLeft 0.75s forwards;
 }
 
 .entry h3 {
