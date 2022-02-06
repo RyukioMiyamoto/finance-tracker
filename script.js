@@ -77,15 +77,15 @@ function addEntryToLS(desc, value, type, time) {
   localStorage.setItem("items", JSON.stringify(items));
 }
 
-function renderEntry(desc, value, type, time) {
+function renderEntry(desc, value, type, time, position) {
   const markup = generateMarkup(desc, value, type, time);
-  entriesContainer.insertAdjacentHTML("afterbegin", markup);
+  entriesContainer.insertAdjacentHTML(position, markup);
 }
 
 function renderEntriesFromLS() {
   items = getEntriesFromLS();
   items.forEach(({ desc, value, type, time }) =>
-    renderEntry(desc, value, type, time)
+    renderEntry(desc, value, type, time, "beforeend")
   );
 }
 
@@ -99,11 +99,10 @@ function handleSubmit(e) {
   if (desc.trim() === "" || value.trim() === "" || isNaN(value) || value <= 0) {
     setMessage(1, "Please enter valid values");
     blockButton();
-    clearForm();
 
     return;
   } else {
-    renderEntry(desc, value, type, time);
+    renderEntry(desc, value, type, time, "afterbegin");
     addEntryToLS(desc, value, type, time);
     clearForm();
   }
@@ -111,7 +110,6 @@ function handleSubmit(e) {
 
 renderEntriesFromLS();
 const allEntries = document.querySelectorAll(".entry");
-const deleteBtn = document.querySelectorAll(".delete-entry");
 
 !reducedMotion && delayAnimation();
 document.getElementById("form-description").focus();
