@@ -87,7 +87,7 @@ function getBalance() {
   expenses = getEntriesSum("-");
   incomes = getEntriesSum("+");
   balance = incomes - expenses;
-  balanceValue.innerHTML = balance;
+  balanceValue.innerHTML = `${balance > 0 ? "" : "-"}$${Math.abs(balance)}`;
   if (balance > 0) {
     balanceValue.classList.add("balance-positive");
     balanceValue.classList.remove("balance-negative");
