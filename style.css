@@ -32,6 +32,8 @@ body {
 
   max-width: 100%;
   padding: 60px 90px;
+
+  
   opacity: 0;
   animation: show 1.25s forwards;
 }
@@ -58,6 +60,11 @@ body {
 #app-header span {
   font-size: 2.25rem;
   font-weight: 600;
+}
+
+.balance {
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .balance-positive {

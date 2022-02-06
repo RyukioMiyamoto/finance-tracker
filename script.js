@@ -1,3 +1,4 @@
+const balanceValue = document.querySelector("span.balance");
 const entriesForm = document.getElementById("entries-form");
 const btn = document.getElementById("submit");
 const message = document.getElementById("message");
@@ -7,6 +8,9 @@ const reducedMotion =
   window.matchMedia("(prefers-reduced-motion: reduced)").matches;
 const prefLanguage = window.navigator.language;
 let items;
+let expenses;
+let incomes;
+let balance;
 
 function delayAnimation() {
   allEntries.forEach((entry, i) => {
@@ -70,6 +74,32 @@ function getEntriesFromLS() {
   return items;
 }
 
+function getEntriesSum(type) {
+  items = localStorage.getItem("items");
+  items = JSON.parse(items);
+  const entries = items.filter((item) => item.type === type);
+  const entriesTotal = entries.reduce((acc, i) => acc + Number(i.value), 0);
+
+  return entriesTotal;
+}
+
+function getBalance() {
+  expenses = getEntriesSum("-");
+  incomes = getEntriesSum("+");
+  balance = incomes - expenses;
+  balanceValue.innerHTML = balance;
+  if (balance > 0) {
+    balanceValue.classList.add("balance-positive");
+    balanceValue.classList.remove("balance-negative");
+  } else if (balance < 0) {
+    balanceValue.classList.add("balance-negative");
+    balanceValue.classList.remove("balance-positive");
+  } else {
+    balanceValue.classList.remove("balance-positive");
+    balanceValue.classList.remove("balance-negative");
+  }
+}
+
 function addEntryToLS(desc, value, type, time) {
   items = getEntriesFromLS();
 
@@ -84,9 +114,10 @@ function renderEntry(desc, value, type, time, position) {
 
 function renderEntriesFromLS() {
   items = getEntriesFromLS();
-  items.forEach(({ desc, value, type, time }) =>
-    renderEntry(desc, value, type, time, "beforeend")
-  );
+  items.forEach(({ desc, value, type, time }) => {
+    renderEntry(desc, value, type, time, "beforeend");
+    getBalance();
+  });
 }
 
 function handleSubmit(e) {
@@ -103,15 +134,15 @@ function handleSubmit(e) {
     return;
   } else {
     renderEntry(desc, value, type, time, "afterbegin");
-    addEntryToLS(desc, value, type, time);
     clearForm();
+    addEntryToLS(desc, value, type, time);
+    getBalance();
   }
 }
 
 renderEntriesFromLS();
 const allEntries = document.querySelectorAll(".entry");
-
 !reducedMotion && delayAnimation();
-document.getElementById("form-description").focus();
 
+document.getElementById("form-description").focus();
 entriesForm.addEventListener("submit", handleSubmit);
