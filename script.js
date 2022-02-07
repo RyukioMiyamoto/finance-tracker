@@ -56,9 +56,9 @@ function generateMarkup(desc, value, type, time) {
   return `<div class="entry">
     <h3>${desc}</h3>
     <small>${time}</small>
-    <span class="value ${
-      type === "+" ? "income" : "expense"
-    }-value">$${value}</span>
+    <span class="value ${type === "+" ? "income" : "expense"}-value">$${Number(
+    value
+  ).toLocaleString()}</span>
     <button class="delete-entry">X</button>
   </div>`;
 }
@@ -87,7 +87,9 @@ function getBalance() {
   expenses = getEntriesSum("-");
   incomes = getEntriesSum("+");
   balance = incomes - expenses;
-  balanceValue.innerHTML = `${balance > 0 ? "" : "-"}$${Math.abs(balance)}`;
+  balanceValue.innerHTML = `${balance >= 0 ? "" : "-"}$${Math.abs(
+    balance
+  ).toLocaleString()}`;
   if (balance > 0) {
     balanceValue.classList.add("balance-positive");
     balanceValue.classList.remove("balance-negative");
@@ -126,11 +128,17 @@ function handleSubmit(e) {
   const value = document.getElementById("form-value").value;
   const type = document.getElementById("form-type").value;
   const time = getCurTime();
+  const tagPattern = new RegExp("[<>]", "g");
 
-  if (desc.trim() === "" || value.trim() === "" || isNaN(value) || value <= 0) {
+  if (
+    desc.trim() === "" ||
+    value.trim() === "" ||
+    isNaN(value) ||
+    value <= 0 ||
+    desc.match(tagPattern)
+  ) {
     setMessage(1, "Please enter valid values");
     blockButton();
-
     return;
   } else {
     renderEntry(desc, value, type, time, "afterbegin");
