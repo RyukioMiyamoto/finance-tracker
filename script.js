@@ -162,7 +162,7 @@ function handleClick(e) {
   );
   const index = items.indexOf(toDeleteItem);
   items.splice(index, 1);
-  entryContainer.classList.add("delete");
+  entryContainer.classList.add("deleted");
   setTimeout(() => {
     entryContainer.remove();
     localStorage.setItem("items", JSON.stringify(items));

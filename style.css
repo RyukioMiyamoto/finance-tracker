@@ -193,7 +193,7 @@ button#submit {
   animation: flipX 0.75s forwards;
 }
 
-.entry.delete {
+.entry.deleted {
   animation: disappear 0.25s forwards;
 }
 
@@ -233,9 +233,10 @@ button#submit {
 }
 
 .delete-entry {
+  font-size: 1.75rem;
   background: inherit;
+  transform: translateY(-3px);
   border: none;
-
   cursor: pointer;
 }
 
