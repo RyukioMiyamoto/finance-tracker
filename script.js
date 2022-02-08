@@ -13,6 +13,8 @@ let expenses;
 let incomes;
 let balance;
 
+console.log(prefLanguage);
+
 function delayAnimation() {
   allEntries.forEach((entry, i) => {
     entry.style.animationDelay = `${i * 250}ms`;
@@ -59,7 +61,7 @@ function generateMarkup(desc, value, type, time, id) {
     <small>${time}</small>
     <span class="value ${type === "+" ? "income" : "expense"}-value">$${Number(
     value
-  ).toLocaleString()}</span>
+  ).toLocaleString(prefLanguage)}</span>
     <button class="delete-entry">❌</button>
   </div>`;
 }
@@ -92,7 +94,7 @@ function getBalance() {
   balance = incomes - expenses;
   balanceValue.innerHTML = `${balance >= 0 ? "" : "-"}$${Math.abs(
     balance
-  ).toLocaleString()}`;
+  ).toLocaleString(prefLanguage)}`;
   if (balance > 0) {
     balanceValue.classList.add("balance-positive");
     balanceValue.classList.remove("balance-negative");
