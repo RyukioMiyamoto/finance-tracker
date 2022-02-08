@@ -3,6 +3,7 @@ const entriesForm = document.getElementById("entries-form");
 const btn = document.getElementById("submit");
 const message = document.getElementById("message");
 const entriesContainer = document.getElementById("entries-container");
+const emptyContainer = document.querySelector(".empty-container");
 const reducedMotion =
   window.matchMedia("(prefers-reduced-motion)").matches ||
   window.matchMedia("(prefers-reduced-motion: reduced)").matches;
@@ -52,31 +53,33 @@ function clearForm() {
   document.getElementById("form-description").focus();
 }
 
-function generateMarkup(desc, value, type, time) {
-  return `<div class="entry">
+function generateMarkup(desc, value, type, time, id) {
+  return `<div class="entry" data-id="${id}">
     <h3>${desc}</h3>
     <small>${time}</small>
     <span class="value ${type === "+" ? "income" : "expense"}-value">$${Number(
     value
   ).toLocaleString()}</span>
-    <button class="delete-entry">X</button>
+    <button class="delete-entry">❌</button>
   </div>`;
 }
 
 function getEntriesFromLS() {
   items = localStorage.getItem("items");
-  if (items) {
-    items = JSON.parse(items);
-  } else {
-    items = [];
-  }
-
+  items = JSON.parse(items) || [];
   return items;
 }
 
+function checkNoEntries() {
+  if (items.length === 0)
+    setTimeout(() => {
+      emptyContainer.classList.add("show");
+    }, 250);
+  else emptyContainer.classList.remove("show");
+}
+
 function getEntriesSum(type) {
-  items = localStorage.getItem("items");
-  items = JSON.parse(items);
+  items = getEntriesFromLS();
   const entries = items.filter((item) => item.type === type);
   const entriesTotal = entries.reduce((acc, i) => acc + Number(i.value), 0);
 
@@ -102,22 +105,22 @@ function getBalance() {
   }
 }
 
-function addEntryToLS(desc, value, type, time) {
+function addEntryToLS(desc, value, type, time, id) {
   items = getEntriesFromLS();
 
-  items = [{ desc, value, type, time }, ...items];
+  items = [{ desc, value, type, time, id }, ...items];
   localStorage.setItem("items", JSON.stringify(items));
 }
 
-function renderEntry(desc, value, type, time, position) {
-  const markup = generateMarkup(desc, value, type, time);
+function renderEntry(desc, value, type, time, position, id) {
+  const markup = generateMarkup(desc, value, type, time, id);
   entriesContainer.insertAdjacentHTML(position, markup);
 }
 
 function renderEntriesFromLS() {
   items = getEntriesFromLS();
-  items.forEach(({ desc, value, type, time }) => {
-    renderEntry(desc, value, type, time, "beforeend");
+  items.forEach(({ desc, value, type, time, id }) => {
+    renderEntry(desc, value, type, time, "beforeend", id);
     getBalance();
   });
 }
@@ -128,6 +131,7 @@ function handleSubmit(e) {
   const value = document.getElementById("form-value").value;
   const type = document.getElementById("form-type").value;
   const time = getCurTime();
+  const id = `entry-${items.length + 1}`;
   const tagPattern = new RegExp("[<>]", "g");
 
   if (
@@ -141,16 +145,37 @@ function handleSubmit(e) {
     blockButton();
     return;
   } else {
-    renderEntry(desc, value, type, time, "afterbegin");
+    renderEntry(desc, value, type, time, "afterbegin", id);
+    addEntryToLS(desc, value, type, time, id);
     clearForm();
-    addEntryToLS(desc, value, type, time);
     getBalance();
+    checkNoEntries();
   }
 }
 
+function handleClick(e) {
+  const operator = e.target.closest("button");
+  if (!operator) return;
+  const entryContainer = e.target.parentElement;
+  const toDeleteItem = items.find(
+    (item) => item.id === entryContainer.getAttribute("data-id")
+  );
+  const index = items.indexOf(toDeleteItem);
+  items.splice(index, 1);
+  entryContainer.classList.add("delete");
+  setTimeout(() => {
+    entryContainer.remove();
+    localStorage.setItem("items", JSON.stringify(items));
+    getBalance();
+  }, 300);
+  checkNoEntries();
+}
+
 renderEntriesFromLS();
+checkNoEntries();
 const allEntries = document.querySelectorAll(".entry");
 !reducedMotion && delayAnimation();
 
-document.getElementById("form-description").focus();
 entriesForm.addEventListener("submit", handleSubmit);
+entriesContainer.addEventListener("click", handleClick);
+document.getElementById("form-description").focus();

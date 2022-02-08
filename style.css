@@ -33,7 +33,6 @@ body {
   max-width: 100%;
   padding: 60px 90px;
 
-  
   opacity: 0;
   animation: show 1.25s forwards;
 }
@@ -161,6 +160,27 @@ button#submit {
   transition: opacity 0.175s ease-in;
 }
 
+.empty-container {
+  display: none;
+  opacity: 0;
+}
+
+.empty-container.show {
+  display: block;
+  width: 500px;
+  padding: 50px;
+  background-color: var(--background);
+  font-size: 2rem;
+  text-align: center;
+  border-radius: 15px;
+  margin: 0 auto;
+  animation: flipX 1.5s forwards;
+}
+
+.empty-container.disappear {
+  animation: disappear 0.75s forwards;
+}
+
 .entry {
   display: grid;
   grid-template-columns: 5fr 2fr 0.5fr;
@@ -171,6 +191,10 @@ button#submit {
   border-radius: 15px;
   opacity: 0;
   animation: flipX 0.75s forwards;
+}
+
+.entry.delete {
+  animation: disappear 0.25s forwards;
 }
 
 .entry h3 {
@@ -210,7 +234,6 @@ button#submit {
 
 .delete-entry {
   background: inherit;
-  color: var(--expense);
   border: none;
 
   cursor: pointer;
@@ -345,6 +368,16 @@ button#submit {
 @keyframes show {
   to {
     opacity: 1;
+  }
+}
+
+@keyframes disappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120px);
+    opacity: 0;
   }
 }
 
