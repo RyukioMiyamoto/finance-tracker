@@ -97,7 +97,6 @@ body {
   min-height: 85px;
   place-content: center;
   padding: 20px 30px;
-
   font-size: 2rem;
   border: none;
   border-radius: 15px;
@@ -123,7 +122,13 @@ input#form-value {
   animation: flipY 1.5s forwards;
 }
 
+select#form-type:active,
+select#form-type:focus {
+  background: var(--background) !important;
+}
+
 select#form-type {
+  background: var(--background);
   color: var(--placeholder);
   font-size: 3.5rem;
   font-weight: 700;
@@ -136,7 +141,7 @@ button {
 }
 
 button#submit {
-  background: inherit;
+  background-color: inherit;
   color: var(--text);
   cursor: pointer;
   opacity: 0;

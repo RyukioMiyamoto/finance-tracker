@@ -135,13 +135,17 @@ function handleSubmit(e) {
   const time = getCurTime();
   const id = `entry-${items.length + 1}`;
   const tagPattern = new RegExp("[<>]", "g");
+  const specialCharPattern = new RegExp("[+*?^$.[]{}()|/]", "g");
 
   if (
     desc.trim() === "" ||
     value.trim() === "" ||
+    desc.match(tagPattern) ||
+    value.match(specialCharPattern) ||
     isNaN(value) ||
     value <= 0 ||
-    desc.match(tagPattern)
+    (type === "-" && value.includes("+")) ||
+    (type === "+" && value.includes("-"))
   ) {
     setMessage(1, "Please enter valid values");
     blockButton();
