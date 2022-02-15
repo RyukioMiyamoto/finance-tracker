@@ -4,11 +4,15 @@
   box-sizing: border-box;
 }
 
+#no-script {
+  display: none;
+}
+
 :root {
   --background: #d7fbd4;
   --app-background: #c2ffbb;
   --income: #22a216;
-  --expense: #e93f4a;
+  --expense: #ac0d18;
   --text: #5a5a5a;
   --text-secondary: #a9a9a9;
   --placeholder: #dddcdc;
@@ -309,7 +313,7 @@ body {
     grid-row: 2;
     grid-column: 1;
     justify-self: end;
-    width: fit-content;
+    min-height: fit-content;
     padding: 0 20px;
   }
 
@@ -319,7 +323,7 @@ body {
 
   #submit {
     grid-row: 2;
-    justify-self: start;
+    justify-self: center;
   }
 
   #entries-form input::placeholder {
@@ -379,12 +383,13 @@ body {
   #app-header,
   #entries-form input,
   #entries-form select,
-  #entries-form button #entries-container,
+  #entries-form button,
+  #entries-container,
   .entry,
   .entry.deleted,
   .empty-container.show {
     opacity: 1 !important;
-    animation: none;
+    animation: none !important;
   }
 }
 
@@ -408,6 +413,11 @@ body {
   #app-header h2,
   #app-header h2 span {
     font-size: 1.75rem;
+  }
+
+  
+  #form-type {
+    font-size: 3rem;
   }
 }
 

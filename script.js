@@ -13,21 +13,9 @@ let expenses;
 let incomes;
 let balance;
 
-console.log(prefLanguage);
-
 function delayAnimation() {
   allEntries.forEach((entry, i) => {
     entry.style.animationDelay = `${i * 250}ms`;
-  });
-}
-
-function getCurTime() {
-  return new Date().toLocaleDateString(prefLanguage, {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   });
 }
 
@@ -48,11 +36,14 @@ function setMessage(opacity, text) {
   }, `${opacity === 0 ? 250 : 0}`);
 }
 
-function clearForm() {
-  document.getElementById("form-description").value = "";
-  document.getElementById("form-value").value = "";
-  document.getElementById("form-type").value = "+";
-  document.getElementById("form-description").focus();
+function getCurTime() {
+  return new Date().toLocaleDateString(prefLanguage, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 function generateMarkup(desc, value, type, time, id) {
@@ -70,6 +61,14 @@ function getEntriesFromLS() {
   items = localStorage.getItem("items");
   items = JSON.parse(items) || [];
   return items;
+}
+
+function renderEntriesFromLS() {
+  items = getEntriesFromLS();
+  items.forEach(({ desc, value, type, time, id }) => {
+    renderEntry(desc, value, type, time, "beforeend", id);
+    getBalance();
+  });
 }
 
 function checkNoEntries() {
@@ -107,6 +106,11 @@ function getBalance() {
   }
 }
 
+function renderEntry(desc, value, type, time, position, id) {
+  const markup = generateMarkup(desc, value, type, time, id);
+  entriesContainer.insertAdjacentHTML(position, markup);
+}
+
 function addEntryToLS(desc, value, type, time, id) {
   items = getEntriesFromLS();
 
@@ -114,17 +118,11 @@ function addEntryToLS(desc, value, type, time, id) {
   localStorage.setItem("items", JSON.stringify(items));
 }
 
-function renderEntry(desc, value, type, time, position, id) {
-  const markup = generateMarkup(desc, value, type, time, id);
-  entriesContainer.insertAdjacentHTML(position, markup);
-}
-
-function renderEntriesFromLS() {
-  items = getEntriesFromLS();
-  items.forEach(({ desc, value, type, time, id }) => {
-    renderEntry(desc, value, type, time, "beforeend", id);
-    getBalance();
-  });
+function clearForm() {
+  document.getElementById("form-description").value = "";
+  document.getElementById("form-value").value = "";
+  document.getElementById("form-type").value = "+";
+  document.getElementById("form-description").focus();
 }
 
 function handleSubmit(e) {
@@ -181,7 +179,7 @@ renderEntriesFromLS();
 checkNoEntries();
 const allEntries = document.querySelectorAll(".entry");
 !reducedMotion && delayAnimation();
+document.getElementById("form-description").focus();
 
 entriesForm.addEventListener("submit", handleSubmit);
 entriesContainer.addEventListener("click", handleClick);
-document.getElementById("form-description").focus();
