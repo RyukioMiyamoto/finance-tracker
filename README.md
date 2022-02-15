@@ -9,7 +9,7 @@ all previous entries.
 
 <h2>Initial Design</h2>
 
-![a list of expenses and incomes](https://github.com/RyukioMiyamoto/finance-tracker/blob/main/preview.png?raw=true)
+![a list of expenses and incomes](https://github.com/RyukioMiyamoto/finance-tracker/blob/main/img/preview.png?raw=true)
 
 <h2>Demo</h2>
 
