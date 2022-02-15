@@ -6,8 +6,8 @@
 
 :root {
   --background: #d7fbd4;
-  --app-background: #c4f2bf;
-  --income: #afd91a;
+  --app-background: #c2ffbb;
+  --income: #22a216;
   --expense: #e93f4a;
   --text: #5a5a5a;
   --text-secondary: #a9a9a9;
@@ -96,13 +96,14 @@ body {
   color: var(--placeholder);
 }
 
-#entries-form input,
-#entries-form select,
-#entries-form button {
+#form-description,
+#form-value,
+#form-type,
+#submit {
+  height: 100%;
   font-family: "Overpass", sans-serif;
-  min-height: 85px;
-  padding: 20px 30px;
   font-size: 2rem;
+  padding: 10px 20px;
   border: none;
   border-radius: 15px;
   opacity: 0;
@@ -113,38 +114,39 @@ body {
   outline: none;
 }
 
-input#form-description {
+#form-description {
   animation: flipY 1.25s forwards;
 }
 
-input:-webkit-autofill {
+#form-description:-webkit-autofill,
+#form-value:-webkit-autofill {
   box-shadow: 0 0 0 100px var(--background) inset;
 }
 
-input#form-value {
+#form-value {
   animation: flipY 1.5s forwards;
 }
 
-select#form-type:active,
-select#form-type:focus {
+#form-type:active,
+#form-type:focus {
   background: var(--background) !important;
 }
 
-select#form-type {
+#form-type {
   background: var(--background);
   text-align: center;
   color: var(--placeholder);
   font-size: 3.5rem;
   font-weight: 700;
-  padding: 0 20px;
+  padding: 10px 20px;
   animation: flipY 1.6s forwards;
 }
 
-button {
-  transition: transform 0.175s ease-in-out;
+#form-type option {
+  text-align: start;
 }
 
-button#submit {
+#submit {
   background-color: inherit;
   color: var(--text);
   cursor: pointer;
@@ -230,6 +232,7 @@ button#submit {
 .value {
   max-width: 6ch;
   word-break: break-all;
+  text-align: center;
 }
 
 .value,
@@ -275,9 +278,9 @@ button#submit {
   #app-container {
     max-width: 500px;
   }
-  
+
   #app-header h1 {
-    line-height: .85;
+    line-height: 0.85;
     margin-bottom: 10px;
   }
 
@@ -287,33 +290,36 @@ button#submit {
 
   #entries-form {
     max-width: 90%;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 33% 33% 33%;
     gap: 10px;
   }
 
-  #entries-form input,
-  #entries-form select,
-  #entries-form button {
+  #form-description,
+  #form-value,
+  #form-type {
     padding: 10px;
     max-height: 50px;
   }
 
-  #entries-form input#form-description {
+  #form-description {
     grid-column: 1/-1;
   }
 
-  #entries-form input#form-value {
-    grid-row: 2;
-    grid-column: 2;
-  }
-
-  #entries-form select#form-type {
+  #form-type {
     grid-row: 2;
     grid-column: 1;
+    justify-self: end;
+    width: fit-content;
+    padding: 0 20px;
   }
 
-  #entries-form #submit {
-    display: none;
+  #form-value {
+    grid-row: 2;
+  }
+
+  #submit {
+    grid-row: 2;
+    justify-self: start;
   }
 
   #entries-form input::placeholder {
@@ -370,6 +376,16 @@ button#submit {
     font-size: 1.8rem;
   }
 
+  #app-header,
+  #entries-form input,
+  #entries-form select,
+  #entries-form button #entries-container,
+  .entry,
+  .entry.deleted,
+  .empty-container.show {
+    opacity: 1 !important;
+    animation: none;
+  }
 }
 
 @media (max-width: 415px) {
@@ -392,19 +408,6 @@ button#submit {
   #app-header h2,
   #app-header h2 span {
     font-size: 1.75rem;
-  }
-
-  #app-header,
-  input#form-description,
-  input#form-value,
-  select#form-type,
-  button#submit,
-  #entries-container,
-  .entry,
-  .entry.deleted,
-  .empty-container.show {
-    opacity: 1;
-    animation: none;
   }
 }
 
