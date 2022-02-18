@@ -1,4 +1,5 @@
-const balanceValue = document.querySelector("span.balance");
+const root = document.documentElement;
+const balanceValue = document.getElementById("balance");
 const entriesForm = document.getElementById("entries-form");
 const btn = document.getElementById("submit");
 const message = document.getElementById("message");
@@ -22,17 +23,18 @@ function delayAnimation() {
 function blockButton() {
   btn.disabled = true;
   setTimeout(() => {
-    setMessage(0, "");
+    setMessage(0, "", "transparent");
     setTimeout(() => {
       btn.disabled = false;
     }, 250);
   }, 1500);
 }
 
-function setMessage(opacity, text) {
+function setMessage(opacity, text, color) {
   message.style.opacity = opacity;
   setTimeout(() => {
-    message.innerText = text;
+    message.style.backgroundColor = color;
+    message.innerHTML = text;
   }, `${opacity === 0 ? 250 : 0}`);
 }
 
@@ -50,10 +52,10 @@ function generateMarkup(desc, value, type, time, id) {
   return `<div class="entry" data-id="${id}">
     <h3>${desc}</h3>
     <small>${time}</small>
-    <span class="value ${type === "+" ? "income" : "expense"}-value">$${Number(
-    value
-  ).toLocaleString(prefLanguage)}</span>
-    <button class="delete-entry">❌</button>
+    <span class="value ${
+      type === "+" ? "income" : "expense"
+    }-value">$${parseFloat(value).toLocaleString(prefLanguage)}</span>
+    <button id="delete-entry">❌</button>
   </div>`;
 }
 
@@ -82,7 +84,7 @@ function checkNoEntries() {
 function getEntriesSum(type) {
   items = getEntriesFromLS();
   const entries = items.filter((item) => item.type === type);
-  const entriesTotal = entries.reduce((acc, i) => acc + Number(i.value), 0);
+  const entriesTotal = entries.reduce((acc, i) => acc + parseFloat(i.value), 0);
 
   return entriesTotal;
 }
@@ -91,18 +93,21 @@ function getBalance() {
   expenses = getEntriesSum("-");
   incomes = getEntriesSum("+");
   balance = incomes - expenses;
-  balanceValue.innerHTML = `${balance >= 0 ? "" : "-"}$${Math.abs(
+  balanceValue.innerText = `${balance >= 0 ? "" : "-"}$${Math.abs(
     balance
   ).toLocaleString(prefLanguage)}`;
   if (balance > 0) {
     balanceValue.classList.add("balance-positive");
     balanceValue.classList.remove("balance-negative");
+    root.style.setProperty("--scrollbar", "rgba(34, 162, 22, 0.75)");
   } else if (balance < 0) {
     balanceValue.classList.add("balance-negative");
     balanceValue.classList.remove("balance-positive");
+    root.style.setProperty("--scrollbar", "rgba(172, 13, 24, 0.95)");
   } else {
     balanceValue.classList.remove("balance-positive");
     balanceValue.classList.remove("balance-negative");
+    root.style.setProperty("--scrollbar", "#a9a9a9");
   }
 }
 
@@ -145,7 +150,7 @@ function handleSubmit(e) {
     (type === "-" && value.includes("+")) ||
     (type === "+" && value.includes("-"))
   ) {
-    setMessage(1, "Please enter valid values");
+    setMessage(1, "Please enter valid values", "var(--expense)");
     blockButton();
     return;
   } else {

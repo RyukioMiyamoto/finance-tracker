@@ -19,7 +19,7 @@
       href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script src="script.js" defer></script>
     <link
       rel="shortcut icon"
@@ -49,13 +49,13 @@
   </head>
   <body>
     <div id="no-script">Sorry, your browser does not support JavaScript!</div>
-    <div id="app-container">
-      <header id="app-header">
-        <h1>Finance Tracker</h1>
-        <h2>Balance: <span class="balance">0</span></h2>
-      </header>
+    <main>
+      <div id="app-container">
+        <header id="app-header">
+          <h1>Finance Tracker</h1>
+          <h2>Balance: <span id="balance">0</span></h2>
+        </header>
 
-      <main>
         <form id="entries-form">
           <input
             type="text"
@@ -71,7 +71,7 @@
         </form>
 
         <div id="message"></div>
-        <div class="empty-container">No entries yet</div>
+        <div class="empty-container"><p>No entries yet</p></div>
         <section id="entries-container">
           <!-- <div class="entry">
             <h3>
@@ -85,27 +85,9 @@
             <small>February 2, 2022, 11:45 AM </small>
             <span class="value expense-value">$100000000</span>
             <button class="delete-entry">x</button>
-          </div>
-          <div class="entry">
-            <h3>Book</h3>
-            <small>February 2, 2022, 11:45 AM </small>
-            <span class="value expense-value">$29.9</span>
-            <button class="delete-entry">x</button>
-          </div>
-          <div class="entry">
-            <h3>Take out</h3>
-            <small>February 2, 2022, 11:45 AM </small>
-            <span class="value expense-value">$50</span>
-            <button class="delete-entry">x</button>
-          </div>
-          <div class="entry">
-            <h3>Salary</h3>
-            <small>February 2, 2022, 11:45 AM </small>
-            <span class="value income-value">$5000</span>
-            <button class="delete-entry">x</button>
           </div> -->
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   </body>
 </html>

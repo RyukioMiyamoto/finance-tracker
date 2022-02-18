@@ -1,0 +1,31 @@
+@keyframes flipX {
+  0% {
+    opacity: 0;
+    transform: rotateX(0deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: rotateX(90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes show {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes disappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120px);
+    opacity: 0;
+  }
+}
